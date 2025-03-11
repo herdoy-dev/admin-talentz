@@ -1,6 +1,4 @@
-import AuthOptions from "@/components/auth-options";
-import Or from "@/components/or";
-import { Box, Flex, Heading, Link } from "@radix-ui/themes";
+import { Box, Flex, Heading } from "@radix-ui/themes";
 import LoginForm from "./login-form";
 
 const Login = () => {
@@ -22,16 +20,6 @@ const Login = () => {
           Login
         </Heading>
         <LoginForm />
-        <Box className="space-y-3" mt="3">
-          <Or />
-          <AuthOptions />
-          <p className="text-center">
-            Don&apos;t have any account?{" "}
-            <Link href="/signup" className="text-primary font-semibold">
-              Sign Up.
-            </Link>{" "}
-          </p>
-        </Box>
       </Box>
     </Flex>
   );

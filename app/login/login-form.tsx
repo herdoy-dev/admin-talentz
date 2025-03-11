@@ -54,7 +54,6 @@ const LoginForm = () => {
       const res = await signIn("credentials", {
         email,
         password,
-        callbackUrl: "/issues",
         redirect: false,
       });
 
@@ -62,13 +61,31 @@ const LoginForm = () => {
         toast.success("Login successful!");
         router.push("/");
       } else {
-        toast.error("Invalid email or password");
+        // Handle specific error messages from the authorize function
+        const errorMessage = res?.error || "Invalid email or password";
+        toast.error(getFriendlyErrorMessage(errorMessage));
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
-      console.log(error);
+      console.error(error);
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  // Helper function to map error codes to friendly messages
+  const getFriendlyErrorMessage = (errorCode: string) => {
+    switch (errorCode) {
+      case "Please provide both email and password.":
+        return "Please provide both email and password.";
+      case "No user found with this email address.":
+        return "No user found with this email address.";
+      case "You do not have permission to access this site.":
+        return "You do not have permission to access this site.";
+      case "Incorrect password. Please try again.":
+        return "Incorrect password. Please try again.";
+      default:
+        return "Invalid email or password";
     }
   };
 

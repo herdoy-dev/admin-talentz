@@ -3,16 +3,11 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import bcrypt from "bcryptjs";
 import { AuthOptions, User as NextAuthUser } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
 
 const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
 
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -30,6 +25,8 @@ const authOptions: AuthOptions = {
           where: { email: credentials.email },
         });
         if (!user) return null;
+
+        if (!user.isAdmin) return null;
 
         const checkPassword = await bcrypt.compare(
           credentials.password,

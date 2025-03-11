@@ -7,22 +7,22 @@ export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
   const { pathname } = req.nextUrl;
 
-  // Allow public files to be accessed by anyone
+  // Allow public files to be accessed
   if (PUBLIC_FILE.test(pathname)) {
     return NextResponse.next();
   }
 
-  // If the user is authenticated and tries to access login or register pages, redirect them to the home page
-  if (token && (pathname === "/login" || pathname === "/signup")) {
+  // If the user is authenticated and tries to access the login page, redirect to home
+  if (token && pathname === "/login") {
     return NextResponse.redirect(new URL("/", req.url));
   }
 
-  // If the user is not authenticated and tries to access any page other than login or register, redirect them to the login page
-  if (!token && pathname !== "/login" && pathname !== "/signup") {
+  // If the user is not authenticated and tries to access any page other than login, redirect to login
+  if (!token && pathname !== "/login") {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  // Allow the request to proceed if none of the above conditions are met
+  // If the user is authenticated, allow access to all other pages
   return NextResponse.next();
 }
 
