@@ -53,7 +53,7 @@ export default function Sidebar() {
         ))}
         <div
           onClick={() => signOut({ callbackUrl: "/login" })}
-          className="flex items-center gap-2 p-2"
+          className="flex items-center gap-2 p-2 cursor-pointer"
         >
           <MdLogout />
           <span> Log Out </span>
